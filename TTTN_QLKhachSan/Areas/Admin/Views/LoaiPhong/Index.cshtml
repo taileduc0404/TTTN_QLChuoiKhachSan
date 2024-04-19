@@ -1,0 +1,219 @@
+﻿@{
+	ViewData["Title"] = "LoaiPhong";
+}
+@*@model List<TTTN_QLKhachSan.ViewModels.LoaiPhongVM>*@
+@model TTTN_QLKhachSan.ViewModels.LoaiPhongCommonVM
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+	<div class="col-lg-10">
+		<h2>Thực tập tốt nghiệp</h2>
+		<ol class="breadcrumb">
+			<li>
+				<a href="index.html">Home</a>
+			</li>
+			<li>
+				<a>Chi nhánh</a>
+			</li>
+			<li class="active">
+				<strong>Loại phòng</strong>
+			</li>
+		</ol>
+	</div>
+	<div class="col-lg-2">
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>Thông tin loại phòng:</h5>
+				<div class="ibox-tools">
+					<ul class="dropdown-menu dropdown-user">
+						<li>
+							<a href="#">Config option 1</a>
+						</li>
+						<li>
+							<a href="#">Config option 2</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="ibox-content">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ibox float-e-margins">
+							<div class="ibox-title">
+								<h5>Danh sách loại phòng </h5>
+								<div class="ibox-tools">
+									<a class="collapse-link">
+										<i class="fa fa-chevron-up"></i>
+									</a>
+								</div>
+							</div>
+							<div class="ibox-content">
+
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>Mã</th>
+											<th>Tên loại phòng</th>
+											<th>Mô tả</th>
+											<th>Giá phòng (đêm)</th>
+											<th>Số lượng phòng</th>
+											<th>Thao tác</th>
+										</tr>
+									</thead>
+									<tbody>
+										@if (Model.LoaiPhongs is not null)
+										{
+											@foreach (var item in Model.LoaiPhongs!)
+											{
+												<tr>
+													<td>@item.Id</td>
+													<td>@item.TenLoaiPhong</td>
+													<td>@item.MoTa</td>
+													<td>@item.GiaPhong</td>
+													<td>@item.SoLuongPhong</td>
+													<td>
+														<div class="form-group" style="display: flex; align-items: center;">
+															<div class="col-sm-2 control-label"></div>
+															<div class="col-sm-10" style="display: flex; gap: 5px;">
+																<form asp-controller="LoaiPhong" asp-action="DeleteLoaiPhong" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa loại phòng này không?');">
+																	<input type="hidden" name="id" value="@item.Id" />
+																	<button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+																</form>
+																<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal_@item.Id">
+																	Sửa
+																</button>
+															</div>
+														</div>
+
+
+
+														<!-- Modal -->
+														<div class="modal fade" id="editModal_@item.Id" tabindex="-1" role="dialog" aria-labelledby="editModalLabel_@item.Id" aria-hidden="true">
+															<div class="modal-dialog" role="document">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<h5 class="modal-title" id="editModalLabel_@item.Id">Sửa thông tin loại phòng</h5>
+																		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																			<span aria-hidden="true">&times;</span>
+																		</button>
+																	</div>
+																	<div class="modal-body">
+																		<!-- Form for editing room type -->
+																		<form id="updateForm_@item.Id" asp-controller="LoaiPhong" asp-action="UpdateLoaiPhong" asp-area="Admin" method="post">
+																			<input type="hidden" asp-for="@Model.UpdateLoaiPhongVM!.Id" value="@item.Id" />
+																			<div class="form-group">
+																				<label for="editTenLoaiPhong">Tên loại phòng</label>
+																				@*<input type="text" class="form-control" id="TenLoaiPhong" name="TenLoaiPhong" value="@item.TenLoaiPhong">*@
+																				<input type="text" class="form-control" id="TenLoaiPhong" asp-for="@Model.UpdateLoaiPhongVM!.TenLoaiPhong" value="@item.TenLoaiPhong">
+																			</div>
+																			<div class="form-group">
+																				<label for="editMoTa">Mô tả</label>
+																				@*<input type="text" class="form-control" id="MoTa" name="MoTa" value="@item.MoTa">*@
+																				<input type="text" class="form-control" id="MoTa" asp-for="@Model.UpdateLoaiPhongVM!.MoTa" value="@item.MoTa">
+																			</div>
+																			<div class="form-group">
+																				<label for="editGiaPhong">Giá phòng</label>
+																				@*<input type="text" class="form-control" id="GiaPhong" name="GiaPhong" value="@item.GiaPhong">*@
+																				<input type="text" class="form-control" id="GiaPhong" asp-for="@Model.UpdateLoaiPhongVM!.GiaPhong" value="@item.GiaPhong">
+																			</div>
+																			<div class="form-group">
+																				<label for="editSoLuongPhong">Số lượng phòng</label>
+																				@*<input type="text" class="form-control" id="SoLuongPhong" name="SoLuongPhong" value="@item.SoLuongPhong">*@
+																				<input type="text" class="form-control" id="SoLuongPhong" asp-for="@Model.UpdateLoaiPhongVM!.SoLuongPhong" value="@item.SoLuongPhong">
+																			</div>
+																			<button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+																		</form>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</td>
+												</tr>
+											}
+										}
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<form asp-controller="LoaiPhong" asp-action="CreateLoaiPhong" method="post" class="form-horizontal">
+					<div class="hr-line-dashed"></div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Nhập thông tin loại phòng</label>
+
+						<div class="col-sm-10">
+							<div class="input-group m-b">
+								<span asp-validation-for="@Model.CreateLoaiPhongVM!.TenLoaiPhong" class="input-group-addon">
+									Tên loại
+									phòng
+								</span>
+								<input asp-for="@Model.CreateLoaiPhongVM!.TenLoaiPhong" type="text" placeholder="Tên loại phòng"
+			class="form-control">
+							</div>
+							<div class="input-group m-b">
+								<span asp-validation-for="@Model.CreateLoaiPhongVM!.MoTa" class="input-group-addon"> Mô tả</span>
+								<input asp-for="@Model.CreateLoaiPhongVM!.MoTa" type="text" placeholder="Mô tả" class="form-control">
+							</div>
+							<div class="input-group m-b">
+								<span asp-validation-for="@Model.CreateLoaiPhongVM!.GiaPhong" class="input-group-addon">
+									Giá
+									phòng
+								</span><input asp-for="@Model.CreateLoaiPhongVM!.GiaPhong" type="text" placeholder="Giá phòng"
+			 class="form-control">
+							</div>
+							<div class="input-group m-b">
+								<span asp-validation-for="@Model.CreateLoaiPhongVM!.SoLuongPhong" class="input-group-addon">
+									Số lượng
+									phòng
+								</span><input asp-for="@Model.CreateLoaiPhongVM!.SoLuongPhong" type="text" placeholder="Số lượng phòng"
+			 class="form-control">
+							</div>
+
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-4 col-sm-offset-2">
+							@*<button class="btn btn-white" type="submit">Cancel</button>*@
+							<button class="btn btn-primary" type="submit">Save changes</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function submitForm(itemId) {
+		event.preventDefault(); // Ngăn chặn hành động mặc định của nút submit
+		var form = document.getElementById("updateForm_" + itemId); // Lấy ra form theo Id
+		var formData = new FormData(form); // Tạo đối tượng FormData từ form
+
+		// Gửi dữ liệu form bằng AJAX
+		fetch(form.action, {
+			method: 'POST',
+			body: formData
+		})
+			.then(response => {
+				if (response.ok) {
+					// Nếu gửi thành công, cập nhật lại dữ liệu trên trang Index
+					location.reload();
+				} else {
+					// Xử lý khi gặp lỗi
+					console.error('Error submitting form');
+				}
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	}
+</script>

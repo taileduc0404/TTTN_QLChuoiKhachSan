@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTTN_QLKhachSan", "TTTN_QLKhachSan\TTTN_QLKhachSan.csproj", "{22EAF8FC-665E-4200-880B-479E1FD75983}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22EAF8FC-665E-4200-880B-479E1FD75983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22EAF8FC-665E-4200-880B-479E1FD75983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22EAF8FC-665E-4200-880B-479E1FD75983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22EAF8FC-665E-4200-880B-479E1FD75983}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CCC578D8-6D8F-4496-B5CD-71807DE29656}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,130 @@
+﻿@{
+    ViewData["Title"] = "Phong";
+}
+@model List<TTTN_QLKhachSan.ViewModels.PhongVM>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Thông tin phòng:</h5>
+                <div class="ibox-tools">
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="#">Config option 1</a>
+                        </li>
+                        <li>
+                            <a href="#">Config option 2</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Danh sách phòng </h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã</th>
+                                            <th>Tên phòng</th>
+                                            <th>Mô tả</th>
+                                            <th>Giá phòng </th>
+                                            <th>Số lượng </th>
+                                        
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach(var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@item.Id</td>
+                                                <td>@item.TenLoaiPhong</td>
+                                                <td>@item.MoTa</td>
+                                                <td>@item.GiaPhong</td>
+                                                <td>@item.SoGiuong</td>
+                                                
+                                            </tr>
+                                        }
+                                       
+                          
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <form method="post" class="form-horizontal" asp-area="Admin" asp-controller="Phong" asp-action="CreatePhong">
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Nhập thông tin phòng</label>
+
+                        <div class="col-sm-10">
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="account">
+                                    <option>--Loại phòng--</option>
+                                    <option>Phòng đôi</option>
+                                    <option>Phòng đơn</option>
+                                    <option>Phòng gia đình</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group m-b">
+                            <span class="input-group-addon">
+                                Tình trạng
+                                phòng
+                            </span><input type="text" placeholder="Tình trạng phòng"
+                                          class="form-control">
+                        </div>
+
+                        <div class="input-group m-b">
+                            <span class="input-group-addon">
+                                Giá
+                                phòng
+                            </span><input type="text" placeholder="Giá phòng" class="form-control">
+                        </div>
+                        <div class="input-group m-b">
+                            <span class="input-group-addon"> Số giường</span><input type="text" placeholder="Số giường" class="form-control">
+                        </div>
+                        <div class="input-group m-b">
+                            <span class="input-group-addon"> Diện tích</span><input type="text" placeholder="Diện tích" class="form-control">
+                        </div>
+
+                        <div class="input-group m-b">
+                            <span class="input-group-addon"> Mô tả</span><input type="text" placeholder="Mô tả" class="form-control">
+                        </div>
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <span class="btn btn-default btn-file">
+                                <span class="fileinput-new">Chọn ảnh phòng</span>
+                                <span class="fileinput-exists"></span><input type="file"
+                                                                             name="..." />
+                            </span>
+                            <span class="fileinput-filename"></span>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-white" type="submit">Cancel</button>
+                            <button class="btn btn-primary" type="submit">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
