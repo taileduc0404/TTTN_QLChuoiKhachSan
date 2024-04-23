@@ -84,7 +84,7 @@ namespace TTTN_QLKhachSan.Areas.Admin.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> UpdateLoaiPhong(int id, LoaiPhongCommonVM vm)
+		public async Task<IActionResult> UpdateLoaiPhong(LoaiPhongCommonVM vm)
 		{
 			if (ModelState.IsValid)
 			{

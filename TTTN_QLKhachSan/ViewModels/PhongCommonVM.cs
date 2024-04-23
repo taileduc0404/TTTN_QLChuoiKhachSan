@@ -3,6 +3,7 @@
     public class PhongCommonVM
     {
         public CreatePhongVM? CreatePhongVM { get; set; }
-        public List<PhongVM>? PhongVM { get; set; }
+        public UpdatePhongVM? UpdatePhongVM { get; set; }
+		public List<PhongVM>? PhongVM { get; set; }
     }
 }

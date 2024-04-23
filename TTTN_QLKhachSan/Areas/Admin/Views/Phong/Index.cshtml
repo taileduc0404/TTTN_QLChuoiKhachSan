@@ -1,8 +1,25 @@
 ﻿@{
-	ViewData["Title"] = "Phong";
+	ViewData["Title"] = "Phòng";
 }
 @model TTTN_QLKhachSan.ViewModels.PhongCommonVM
-
+<div class="row wrapper border-bottom white-bg page-heading">
+	<div class="col-lg-10">
+		<h2>Thực tập tốt nghiệp</h2>
+		<ol class="breadcrumb">
+			<li>
+				<a href="index.html">Home</a>
+			</li>
+			<li>
+				<a>Chi nhánh</a>
+			</li>
+			<li class="active">
+				<strong>Loại phòng</strong>
+			</li>
+		</ol>
+	</div>
+	<div class="col-lg-2">
+	</div>
+</div>
 <div class="row">
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
@@ -45,6 +62,7 @@
 											<th>Diện tích </th>
 											<th>Số giường </th>
 											<th>Hình ảnh </th>
+											<th>Hành động </th>
 
 										</tr>
 									</thead>
@@ -60,11 +78,78 @@
 												<td>@item.DienTich</td>
 												<td>@item.SoGiuong</td>
 												<td>@item.HinhAnh</td>
+												<td>
+													<div class="form-group" style="display: flex; align-items: center;">
+														<div class="col-sm-2 control-label"></div>
+														<div class="col-sm-10" style="display: flex; gap: 5px;">
+															<form asp-controller="Phong" asp-action="DeletePhong" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa loại phòng này không?');">
+																<input type="hidden" name="id" value="@item.Id" />
+																<button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+															</form>
+															<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal_@item.Id">
+																Sửa
+															</button>
+														</div>
+													</div>
+													<!-- Modal -->
+													<div class="modal fade" id="editModal_@item.Id" tabindex="-1" role="dialog" aria-labelledby="editModalLabel_@item.Id" aria-hidden="true">
+														<div class="modal-dialog" role="document">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h5 class="modal-title" id="editModalLabel_@item.Id">Sửa thông tin phòng</h5>
+																	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																		<span aria-hidden="true">&times;</span>
+																	</button>
+																</div>
+																<div class="modal-body">
+																	<!-- Form for editing room information -->
+																	<form id="updateForm_@item.Id" asp-controller="Phong" asp-action="UpdatePhong" asp-area="Admin" method="post">
+																		<input type="hidden" asp-for="@Model.UpdatePhongVM!.Id" value="@item.Id" />
+																		<div class="form-group">
+																			<label for="editLoaiPhong">Loại phòng</label>
+																			<select class="form-control" id="LoaiPhong" name="LoaiPhong">
+																				<option value="">-- Chọn loại phòng --</option>
+																				@foreach (var loaiPhong in ViewBag.LoaiPhongs)
+																				{
+																					<option value="@loaiPhong.Value">@loaiPhong.Text</option>
+																				}
+																			</select>
+																		</div>
+																		<div class="form-group">
+																			@*<label for="editMoTa">Mô tả</label>*@
+																			<input type="hidden" class="form-control" id="MoTa" name="MoTa" value="@item.MoTa" readonly>
+																		</div>
+																		<div class="form-group">
+																			@*<label for="editGiaPhong">Giá phòng</label>*@
+																			<input type="hidden" class="form-control" id="GiaPhong" name="GiaPhong" value="@item.GiaPhong" readonly>
+																		</div>
+																		<div class="form-group">
+																			<label for="editTinhTrangPhong">Tình trạng phòng</label>
+																			<input type="text" class="form-control" id="TinhTrangPhong" name="TinhTrangPhong" value="@item.TinhTrangPhong">
+																		</div>
+																		<div class="form-group">
+																			<label for="editDienTich">Diện tích</label>
+																			<input type="text" class="form-control" id="DienTich" name="DienTich" value="@item.DienTich">
+																		</div>
+																		<div class="form-group">
+																			<label for="editSoGiuong">Số giường</label>
+																			<input type="text" class="form-control" id="SoGiuong" name="SoGiuong" value="@item.SoGiuong">
+																		</div>
+																		<div class="form-group">
+																			<label for="editHinhAnh">Hình ảnh</label>
+																			<input type="file" class="form-control-file" id="HinhAnh" name="HinhAnh">
+																		</div>
+																		<button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+																	</form>
+																</div>
+															</div>
+														</div>
+													</div>
+
+												</td>
 
 											</tr>
 										}
-
-
 									</tbody>
 								</table>
 
@@ -73,7 +158,7 @@
 					</div>
 
 				</div>
-				<form method="post" class="form-horizontal" asp-area="Admin" asp-controller="Phong" asp-action="CreatePhong">
+				<form method="post" class="form-horizontal" asp-area="Admin" asp-controller="Phong" asp-action="CreatePhong" enctype="multipart/form-data">
 					<div class="hr-line-dashed"></div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Nhập thông tin phòng</label>
@@ -87,41 +172,49 @@
 										<option value="@item.Value">@item.Text</option>
 									}
 								</select>
-								<input type="hidden" id="hiddenLoaiPhongId" name="loaiPhongId" />
 
 
 							</div>
 						</div>
 						<div class="input-group m-b">
+							<span class="input-group-addon">ID loại phòng</span>
+							<input asp-for="@Model.CreatePhongVM!.IdLoaiPhong" id="selectedLoaiPhongId" type="text" class="form-control" readonly>
+						</div>
+
+						<div class="input-group m-b">
+
+							<input type="hidden" id="loaiPhongIdHidden" name="LoaiPhongId" value="">
+						</div>
+
+						<div class="input-group m-b">
 							<span asp-validation-for="@Model.CreatePhongVM!.TinhTrangPhong" class="input-group-addon">
 								Tình trạng
 								phòng
-							</span><input asp-for="@Model.CreatePhongVM!.TinhTrangPhong" type="text" placeholder="Tình trạng phòng"
-										  class="form-control">
+							</span><input asp-for="@Model.CreatePhongVM!.TinhTrangPhong" type="text" placeholder="Tình trạng phòng" class="form-control">
 						</div>
-						<div class="input-group m-b">
-							<span class="input-group-addon"> Giá phòng</span><input type="text" id="giaPhong" placeholder="Giá phòng" class="form-control" readonly>
-						</div>
-						<div class="input-group m-b">
-							<span class="input-group-addon"> Mô tả</span><input type="text" id="moTa" placeholder="Mô tả" class="form-control" readonly>
-						</div>
-
 						<div class="input-group m-b">
 							<span asp-validation-for="@Model.CreatePhongVM!.SoGiuong" class="input-group-addon"> Số giường</span><input asp-for="@Model.CreatePhongVM!.SoGiuong" type="text" placeholder="Số giường" class="form-control">
 						</div>
 						<div class="input-group m-b">
 							<span asp-validation-for="@Model.CreatePhongVM!.DienTich" class="input-group-addon"> Diện tích</span><input asp-for="@Model.CreatePhongVM!.DienTich" type="text" placeholder="Diện tích" class="form-control">
 						</div>
+						<div class="input-group m-b">
+							<span class="input-group-addon"> Giá phòng</span><input asp-for="@Model.CreatePhongVM!.GiaPhong" type="text" id="giaPhong" placeholder="Giá phòng" class="form-control" readonly>
+						</div>
+						<div class="input-group m-b">
+							<span class="input-group-addon"> Mô tả</span><input asp-for="@Model.CreatePhongVM!.MoTa" type="text" id="moTa" placeholder="Mô tả" class="form-control" readonly>
+						</div>
+
+						
 
 
 						<div class="fileinput fileinput-new" data-provides="fileinput">
 							<span class="btn btn-default btn-file">
 								<span class="fileinput-new">Chọn ảnh phòng</span>
-								<span class="fileinput-exists"></span><input type="file"
-																	 name="..." />
+								<span class="fileinput-exists"></span>
+								<input asp-for="@Model.CreatePhongVM!.HinhAnh" type="file" />
 							</span>
 							<span class="fileinput-filename"></span>
-
 						</div>
 					</div>
 					<div class="form-group">
@@ -136,11 +229,20 @@
 	</div>
 </div>
 
+
+@*lấy giá và mô tả loại phòng*@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	$(document).ready(function () {
 		$('#loaiPhongId').change(function () {
 			var loaiPhongId = $(this).val();
+			// Kiểm tra nếu loaiPhongId không có giá trị (chọn --Chọn loại phòng--), thì đặt giá trị của input giá và mô tả thành trống
+			if (!loaiPhongId) {
+				$('#giaPhong').val('');
+				$('#moTa').val('');
+				return; // Dừng hàm xử lý tại đây nếu không có loại phòng được chọn
+			}
+			// Nếu có loại phòng được chọn, thực hiện gửi request ajax và cập nhật giá trị cho input giá và mô tả
 			$.ajax({
 				type: 'POST',
 				url: '/Admin/Phong/GetGiaMoTa',
@@ -153,3 +255,19 @@
 		});
 	});
 </script>
+
+@*lấy giá và mô tả loại phòng*@
+
+@*lấy id loại phòng*@
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$("#loaiPhongId").change(function () {
+				var loaiPhongId = $(this).val(); // Lấy ID của loại phòng được chọn
+				$("#loaiPhongIdHidden").val(loaiPhongId); // Cập nhật giá trị của input ẩn
+				$("#selectedLoaiPhongId").val(loaiPhongId); // Cập nhật giá trị của input hiển thị
+			});
+		});
+	</script>
+}
+@*lấy id loại phòng*@
