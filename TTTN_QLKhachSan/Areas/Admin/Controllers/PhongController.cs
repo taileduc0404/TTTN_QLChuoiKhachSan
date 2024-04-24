@@ -36,6 +36,7 @@ namespace TTTN_QLKhachSan.Areas.Admin.Controllers
 				{
 					Id = x.Id,
 					TenLoaiPhong = x.LoaiPhongIdIdNavigation!.TenLoaiPhong,
+					LoaiPhongId = x.LoaiPhongId,
 					MoTa = x.MoTa,
 					TinhTrangPhong = x.TinhTrangPhong,
 					GiaPhong = x.GiaPhong,

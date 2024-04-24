@@ -2,6 +2,9 @@
 	ViewData["Title"] = "Phòng";
 }
 @model TTTN_QLKhachSan.ViewModels.PhongCommonVM
+@{
+	var loaiPhongs = ViewBag.LoaiPhongs as List<SelectListItem>;
+}
 <div class="row wrapper border-bottom white-bg page-heading">
 	<div class="col-lg-10">
 		<h2>Thực tập tốt nghiệp</h2>
@@ -56,6 +59,7 @@
 										<tr>
 											<th>Mã</th>
 											<th>Tên loại phòng</th>
+											<th>Mã loại phòng</th>
 											<th>Mô tả</th>
 											<th>Tình trạng phòng</th>
 											<th>Giá phòng </th>
@@ -72,6 +76,7 @@
 											<tr>
 												<td>@item.Id</td>
 												<td>@item.TenLoaiPhong</td>
+												<td>@item.LoaiPhongId</td>
 												<td>@item.MoTa</td>
 												<td>@item.TinhTrangPhong</td>
 												<td>@item.GiaPhong</td>
@@ -86,9 +91,16 @@
 																<input type="hidden" name="id" value="@item.Id" />
 																<button type="submit" class="btn btn-danger btn-sm">Xóa</button>
 															</form>
-															<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal_@item.Id">
+															@*<button type="button" class="btn btn-primary btn-sm edit-btn" data-toggle="modal" data-target="#editModal_@item.Id" data-id="@item.Id" data-loai-phong="@item.TenLoaiPhong">
+																Sửa
+															</button>*@
+															<button type="button" class="btn btn-primary btn-sm edit-btn"
+																	data-toggle="modal" data-target="#editModal_@item.Id"
+																	data-id="@item.Id" data-loai-phong="@item.TenLoaiPhong"
+																	data-id-loai-phong="@item.LoaiPhongId">
 																Sửa
 															</button>
+
 														</div>
 													</div>
 													<!-- Modal -->
@@ -101,13 +113,14 @@
 																		<span aria-hidden="true">&times;</span>
 																	</button>
 																</div>
+
 																<div class="modal-body">
 																	<!-- Form for editing room information -->
 																	<form id="updateForm_@item.Id" asp-controller="Phong" asp-action="UpdatePhong" asp-area="Admin" method="post">
 																		<input type="hidden" asp-for="@Model.UpdatePhongVM!.Id" value="@item.Id" />
 																		<div class="form-group">
 																			<label for="editLoaiPhong">Loại phòng</label>
-																			<select class="form-control" id="LoaiPhong" name="LoaiPhong">
+																			<select class="form-control" id="LoaiPhong_@item.Id" name="LoaiPhong">
 																				<option value="">-- Chọn loại phòng --</option>
 																				@foreach (var loaiPhong in ViewBag.LoaiPhongs)
 																				{
@@ -115,29 +128,34 @@
 																				}
 																			</select>
 																		</div>
+																		<div class="input-group">
+																			<label>Id Loại phòng</label>
+																			<input id="IdLoaiPhong_@item.Id" name="IdLoaiPhong" value="@item.LoaiPhongId" type="text" class="form-control" readonly>
+																		</div>
+
 																		<div class="form-group">
-																			@*<label for="editMoTa">Mô tả</label>*@
-																			<input type="hidden" class="form-control" id="MoTa" name="MoTa" value="@item.MoTa" readonly>
+																			<label for="editMoTa">Mô tả</label>
+																			<input type="text" class="form-control" id="MoTa_@item.Id" name="MoTa" value="@item.MoTa" readonly>
 																		</div>
 																		<div class="form-group">
-																			@*<label for="editGiaPhong">Giá phòng</label>*@
-																			<input type="hidden" class="form-control" id="GiaPhong" name="GiaPhong" value="@item.GiaPhong" readonly>
+																			<label for="editGiaPhong">Giá phòng</label>
+																			<input type="text" class="form-control" id="GiaPhong_@item.Id" name="GiaPhong" value="@item.GiaPhong" readonly>
 																		</div>
 																		<div class="form-group">
 																			<label for="editTinhTrangPhong">Tình trạng phòng</label>
-																			<input type="text" class="form-control" id="TinhTrangPhong" name="TinhTrangPhong" value="@item.TinhTrangPhong">
+																			<input type="text" class="form-control" id="TinhTrangPhong_@item.Id" name="TinhTrangPhong" value="@item.TinhTrangPhong">
 																		</div>
 																		<div class="form-group">
 																			<label for="editDienTich">Diện tích</label>
-																			<input type="text" class="form-control" id="DienTich" name="DienTich" value="@item.DienTich">
+																			<input type="text" class="form-control" id="DienTich_@item.Id" name="DienTich" value="@item.DienTich">
 																		</div>
 																		<div class="form-group">
 																			<label for="editSoGiuong">Số giường</label>
-																			<input type="text" class="form-control" id="SoGiuong" name="SoGiuong" value="@item.SoGiuong">
+																			<input type="text" class="form-control" id="SoGiuong_@item.Id" name="SoGiuong" value="@item.SoGiuong">
 																		</div>
 																		<div class="form-group">
 																			<label for="editHinhAnh">Hình ảnh</label>
-																			<input type="file" class="form-control-file" id="HinhAnh" name="HinhAnh">
+																			<input type="file" class="form-control-file" id="HinhAnh_@item.Id" name="HinhAnh">
 																		</div>
 																		<button type="submit" class="btn btn-primary">Lưu thay đổi</button>
 																	</form>
@@ -150,6 +168,7 @@
 
 											</tr>
 										}
+
 									</tbody>
 								</table>
 
@@ -181,9 +200,15 @@
 							<input asp-for="@Model.CreatePhongVM!.IdLoaiPhong" id="selectedLoaiPhongId" type="text" class="form-control" readonly>
 						</div>
 
-						<div class="input-group m-b">
-
+				@*		<div class="input-group m-b">
 							<input type="hidden" id="loaiPhongIdHidden" name="LoaiPhongId" value="">
+						</div>*@
+						
+						<div class="input-group m-b">
+							<span class="input-group-addon"> Giá phòng</span><input asp-for="@Model.CreatePhongVM!.GiaPhong" type="text" id="giaPhong" placeholder="Giá phòng" class="form-control" readonly>
+						</div>
+						<div class="input-group m-b">
+							<span class="input-group-addon"> Mô tả</span><input asp-for="@Model.CreatePhongVM!.MoTa" type="text" id="moTa" placeholder="Mô tả" class="form-control" readonly>
 						</div>
 
 						<div class="input-group m-b">
@@ -198,14 +223,6 @@
 						<div class="input-group m-b">
 							<span asp-validation-for="@Model.CreatePhongVM!.DienTich" class="input-group-addon"> Diện tích</span><input asp-for="@Model.CreatePhongVM!.DienTich" type="text" placeholder="Diện tích" class="form-control">
 						</div>
-						<div class="input-group m-b">
-							<span class="input-group-addon"> Giá phòng</span><input asp-for="@Model.CreatePhongVM!.GiaPhong" type="text" id="giaPhong" placeholder="Giá phòng" class="form-control" readonly>
-						</div>
-						<div class="input-group m-b">
-							<span class="input-group-addon"> Mô tả</span><input asp-for="@Model.CreatePhongVM!.MoTa" type="text" id="moTa" placeholder="Mô tả" class="form-control" readonly>
-						</div>
-
-						
 
 
 						<div class="fileinput fileinput-new" data-provides="fileinput">
@@ -219,7 +236,6 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-4 col-sm-offset-2">
-							<button class="btn btn-white" type="submit">Cancel</button>
 							<button class="btn btn-primary" type="submit">Save changes</button>
 						</div>
 					</div>
@@ -230,42 +246,78 @@
 </div>
 
 
-@*lấy giá và mô tả loại phòng*@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-	$(document).ready(function () {
-		$('#loaiPhongId').change(function () {
-			var loaiPhongId = $(this).val();
-			// Kiểm tra nếu loaiPhongId không có giá trị (chọn --Chọn loại phòng--), thì đặt giá trị của input giá và mô tả thành trống
-			if (!loaiPhongId) {
-				$('#giaPhong').val('');
-				$('#moTa').val('');
-				return; // Dừng hàm xử lý tại đây nếu không có loại phòng được chọn
-			}
-			// Nếu có loại phòng được chọn, thực hiện gửi request ajax và cập nhật giá trị cho input giá và mô tả
-			$.ajax({
-				type: 'POST',
-				url: '/Admin/Phong/GetGiaMoTa',
-				data: { loaiPhongId: loaiPhongId },
-				success: function (result) {
-					$('#giaPhong').val(result.giaPhong);
-					$('#moTa').val(result.moTa);
-				}
-			});
-		});
-	});
-</script>
 
-@*lấy giá và mô tả loại phòng*@
 
 @*lấy id loại phòng*@
 @section Scripts {
+	@*lấy giá và mô tả loại phòng*@
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('#loaiPhongId').change(function () {
+				var loaiPhongId = $(this).val();
+				// Kiểm tra nếu loaiPhongId không có giá trị (chọn --Chọn loại phòng--), thì đặt giá trị của input giá và mô tả thành trống
+				if (!loaiPhongId) {
+					$('#giaPhong').val('');
+					$('#moTa').val('');
+					return; // Dừng hàm xử lý tại đây nếu không có loại phòng được chọn
+				}
+				// Nếu có loại phòng được chọn, thực hiện gửi request ajax và cập nhật giá trị cho input giá và mô tả
+				$.ajax({
+					type: 'POST',
+					url: '/Admin/Phong/GetGiaMoTa',
+					data: { loaiPhongId: loaiPhongId },
+					success: function (result) {
+						$('#giaPhong').val(result.giaPhong);
+						$('#moTa').val(result.moTa);
+					}
+				});
+			});
+		});
+	</script>
+
+	@*lấy giá và mô tả loại phòng*@
 	<script>
 		$(document).ready(function () {
 			$("#loaiPhongId").change(function () {
 				var loaiPhongId = $(this).val(); // Lấy ID của loại phòng được chọn
 				$("#loaiPhongIdHidden").val(loaiPhongId); // Cập nhật giá trị của input ẩn
 				$("#selectedLoaiPhongId").val(loaiPhongId); // Cập nhật giá trị của input hiển thị
+			});
+		});
+	</script>
+	<script>
+		$(document).ready(function () {
+			$('.edit-btn').click(function () {
+				var id = $(this).data('id');
+				var loaiPhong = $(this).data('loai-phong');
+				var loaiPhongId = $(this).data('id-loai-phong'); // Lấy id loại phòng từ thuộc tính data-id-loai-phong
+
+				// Đặt giá trị cho các trường input trong modal
+				$('#LoaiPhong_' + id).val(loaiPhong);
+				$('#IdLoaiPhong_' + id).val(loaiPhongId).find('td:eq(1)').text());
+				$('#MoTa_' + id).val($(this).closest('tr').find('td:eq(2)').text());
+				$('#GiaPhong_' + id).val($(this).closest('tr').find('td:eq(3)').text());
+				$('#TinhTrangPhong_' + id).val($(this).closest('tr').find('td:eq(4)').text());
+				$('#DienTich_' + id).val($(this).closest('tr').find('td:eq(5)').text());
+				$('#SoGiuong_' + id).val($(this).closest('tr').find('td:eq(6)').text());
+			});
+
+		});
+	</script>
+	<script>
+		$(document).ready(function () {
+			$('.edit-btn').click(function () {
+				var id = $(this).data('id');
+				var loaiPhong = $(this).data('loai-phong');
+				var loaiPhongId = $(this).data('id-loai-phong');
+
+				// Thiết lập giá trị cho dropdown menu
+				$('#LoaiPhong_' + id).val(loaiPhongId);
+
+				// Các dòng code khác để thiết lập giá trị cho các trường khác trong modal
+				// ...
+
 			});
 		});
 	</script>
