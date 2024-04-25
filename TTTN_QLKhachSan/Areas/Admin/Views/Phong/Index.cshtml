@@ -92,8 +92,8 @@
 																<button type="submit" class="btn btn-danger btn-sm">Xóa</button>
 															</form>
 															@*<button type="button" class="btn btn-primary btn-sm edit-btn" data-toggle="modal" data-target="#editModal_@item.Id" data-id="@item.Id" data-loai-phong="@item.TenLoaiPhong">
-																Sửa
-															</button>*@
+														Sửa
+														</button>*@
 															<button type="button" class="btn btn-primary btn-sm edit-btn"
 																	data-toggle="modal" data-target="#editModal_@item.Id"
 																	data-id="@item.Id" data-loai-phong="@item.TenLoaiPhong"
@@ -200,10 +200,10 @@
 							<input asp-for="@Model.CreatePhongVM!.IdLoaiPhong" id="selectedLoaiPhongId" type="text" class="form-control" readonly>
 						</div>
 
-				@*		<div class="input-group m-b">
-							<input type="hidden" id="loaiPhongIdHidden" name="LoaiPhongId" value="">
+						@*		<div class="input-group m-b">
+						<input type="hidden" id="loaiPhongIdHidden" name="LoaiPhongId" value="">
 						</div>*@
-						
+
 						<div class="input-group m-b">
 							<span class="input-group-addon"> Giá phòng</span><input asp-for="@Model.CreatePhongVM!.GiaPhong" type="text" id="giaPhong" placeholder="Giá phòng" class="form-control" readonly>
 						</div>
@@ -294,7 +294,7 @@
 				var loaiPhongId = $(this).data('id-loai-phong'); // Lấy id loại phòng từ thuộc tính data-id-loai-phong
 
 				// Đặt giá trị cho các trường input trong modal
-				$('#LoaiPhong_' + id).val(loaiPhong);
+				$('#LoaiPhong_' + id).val(loaiPhongId);
 				$('#IdLoaiPhong_' + id).val(loaiPhongId).find('td:eq(1)').text());
 				$('#MoTa_' + id).val($(this).closest('tr').find('td:eq(2)').text());
 				$('#GiaPhong_' + id).val($(this).closest('tr').find('td:eq(3)').text());
@@ -302,7 +302,6 @@
 				$('#DienTich_' + id).val($(this).closest('tr').find('td:eq(5)').text());
 				$('#SoGiuong_' + id).val($(this).closest('tr').find('td:eq(6)').text());
 			});
-
 		});
 	</script>
 	<script>
@@ -321,5 +320,8 @@
 			});
 		});
 	</script>
+
+});
+
 }
 @*lấy id loại phòng*@
